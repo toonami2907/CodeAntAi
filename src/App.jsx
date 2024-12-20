@@ -1,34 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route, Outlet } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
+import Layout from './functions/Layout'
+import Sign_in from './components/auth/Sign_in'
+
+
+// Lazy load components
+const Home = lazy(() => import('./pages/Home'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+  </div>
+)
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Suspense fallback={<LoadingFallback />}>
+      <Routes>
+      <Route path="/" element={<Outlet/>}>
+        <Route index element={<Sign_in/>}/>
+      </Route>
+        <Route path="/dashboard" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </Suspense>
   )
 }
 

@@ -1,11 +1,23 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
+    darkMode: ['class'],
+    content: [
     './index.html',
     './src/**/*.{js,jsx,ts,tsx}', // Include both .js and .ts/.tsx files
   ],
   theme: {
-    extend: {},
+  	extend: {
+  		borderRadius: {
+  			lg: 'var(--radius)',
+  			md: 'calc(var(--radius) - 2px)',
+  			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		colors: {},
+      screens: {
+        xs: '320px',
+        sm: '360px',
+      }
+  	}
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };
